@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 interface Response {
   correct?: boolean
@@ -58,49 +59,52 @@ function App() {
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-semibold mb-4">Flashcard Game</h1>
-      <div className="bg-white p-6 rounded shadow-md w-96">
-        <div className="flashcard">
-          {flashcards[currentCard].img && (
-            <img
-              src={flashcards[currentCard].img}
-              alt="Flashcard"
-              className="mb-4"
-            />
-          )}
-          <p className="text-lg mb-4">{flashcards[currentCard].text}</p>
-          <div className="response-options">
+      <Card className="">
+        <CardContent className="grid gap-4">
+          <div className="flex items-center mt-4">
+            {flashcards[currentCard].img && (
+              <img
+                src={flashcards[currentCard].img}
+                alt="Flashcard"
+                className="mb-4"
+              />
+            )}
+          </div>
+
+          <p className="text-lg mb-4 font-medium leading-none">
+            {flashcards[currentCard].text}
+          </p>
+          <div className="flex gap-2">
             {flashcards[currentCard].responses.map((response, index) => (
-              <button
+              <Button
                 key={index}
+                variant={
+                  showAnswer && response.correct ? "destructive" : "outline"
+                }
                 onClick={() => handleAnswer(!!response.correct)}
-                className={`px-4 py-2 rounded border ${
-                  showAnswer && response.correct ? "bg-green-300" : ""
-                }`}
               >
                 {response.text}
-              </button>
+              </Button>
             ))}
           </div>
-        </div>
-        <div className="flex justify-between mt-4">
-          <button
+        </CardContent>
+
+        <CardFooter className="flex justify-between">
+          <Button
             onClick={handlePrevCard}
             disabled={currentCard === 0}
-            className="px-4 py-2 rounded bg-blue-500 text-white disabled:opacity-50"
+            variant={"outline"}
           >
             Previous
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleNextCard}
             disabled={currentCard === flashcards.length - 1}
-            className="px-4 py-2 rounded bg-blue-500 text-white disabled:opacity-50"
           >
             Next
-          </button>
-          <Button>Click me</Button>
-        </div>
-      </div>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   )
 }
