@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 
 interface Response {
   correct?: boolean
@@ -97,6 +98,7 @@ function App() {
           >
             Next
           </button>
+          <Button>Click me</Button>
         </div>
       </div>
     </div>
