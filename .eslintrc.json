@@ -6,6 +6,7 @@
   "extends": [
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:prettier/recommended",
     "eslint:recommended",
     "standard-with-typescript",
     "prettier"
@@ -17,6 +18,8 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off"
   }
 }

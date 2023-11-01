@@ -1,70 +1,76 @@
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface Response {
-  correct?: boolean
-  text: string
+  correct?: boolean;
+  text: string;
 }
 
 interface FlashcardSet {
-  img?: string
-  responses: Response[]
-  text: string
+  img?: string;
+  responses: Response[];
+  text: string;
 }
 
-type FlashcardProps = React.ComponentProps<typeof Card>
+type FlashcardProps = React.ComponentProps<typeof Card>;
 
-export default function Flashcard({ className, ...props }: FlashcardProps) {
-  const [flashcards, setFlashcards] = useState<FlashcardSet[]>([])
-  const [currentCard, setCurrentCard] = useState<number>(0)
-  const [showAnswer, setShowAnswer] = useState<boolean>(false)
+export default function Flashcard({
+  className,
+  ...props
+}: FlashcardProps): JSX.Element {
+  const [flashcards, setFlashcards] = useState<FlashcardSet[]>([]);
+  const [currentCard, setCurrentCard] = useState<number>(0);
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchData(): Promise<void> {
       try {
-        const response = await fetch("/data.json")
-        const data = await response.json()
-        setFlashcards(data.questions)
+        const response = await fetch("/data.json");
+        const data = await response.json();
+        setFlashcards(data.questions);
       } catch (error) {
-        console.error("Error loading flashcard data:", error)
+        console.error("Error loading flashcard data:", error);
       }
     }
-    fetchData()
-  }, [])
+    fetchData().catch((error) => {
+      // Handle any uncaught promise rejections here
+      console.error("Unhandled promise rejection:", error);
+    });
+  }, []);
 
-  const handleNextCard = () => {
-    setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length)
-    setShowAnswer(false)
-  }
+  const handleNextCard = (): void => {
+    setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length);
+    setShowAnswer(false);
+  };
 
-  const handlePrevCard = () => {
+  const handlePrevCard = (): void => {
     setCurrentCard(
-      (prevCard) => (prevCard - 1 + flashcards.length) % flashcards.length
-    )
-    setShowAnswer(false)
-  }
+      (prevCard) => (prevCard - 1 + flashcards.length) % flashcards.length,
+    );
+    setShowAnswer(false);
+  };
 
-  const handleAnswer = (isCorrect: boolean) => {
+  const handleAnswer = (isCorrect: boolean): void => {
     if (isCorrect) {
       // Handle a correct answer
     } else {
       // Handle an incorrect answer
     }
 
-    setShowAnswer(true)
-  }
+    setShowAnswer(true);
+  };
 
   if (flashcards.length === 0) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
     <Card className={cn("w-3/4 overflow-auto p-4", className)} {...props}>
       <CardContent className="flex flex-col gap-4">
         <div className="flex justify-center">
-          {flashcards[currentCard].img && (
+          {Boolean(flashcards[currentCard].img) && (
             <img
               src={flashcards[currentCard].img}
               alt="Flashcard"
@@ -83,9 +89,13 @@ export default function Flashcard({ className, ...props }: FlashcardProps) {
           <Button
             key={index}
             className="whitespace-normal break-words leading-1 h-auto"
-            variant={showAnswer && response.correct ? "destructive" : "outline"}
+            variant={
+              showAnswer && response.correct === true
+                ? "destructive"
+                : "outline"
+            }
             onClick={() => {
-              handleAnswer(!!response.correct)
+              handleAnswer(response.correct === false);
             }}
           >
             {response.text}
@@ -106,5 +116,5 @@ export default function Flashcard({ className, ...props }: FlashcardProps) {
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

@@ -4,12 +4,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Flashcard from "@/components/flashcard"
-import { ModeToggle } from "@/components/mode-toggle"
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Flashcard from "@/components/flashcard";
+import { ModeToggle } from "@/components/mode-toggle";
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <>
       <div className="flex-col md:flex">
@@ -167,5 +167,5 @@ export default function App() {
         </div>
       </div>
     </>
-  )
+  );
 }
