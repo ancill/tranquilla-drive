@@ -1,112 +1,171 @@
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Flashcard from "@/components/flashcard"
+import { ModeToggle } from "@/components/mode-toggle"
 
-interface Response {
-  correct?: boolean
-  text: string
-}
-
-interface Flashcard {
-  img?: string
-  responses: Response[]
-  text: string
-}
-
-function App() {
-  const [flashcards, setFlashcards] = useState<Flashcard[]>([])
-  const [currentCard, setCurrentCard] = useState<number>(0)
-  const [showAnswer, setShowAnswer] = useState<boolean>(false)
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("/data.json")
-        const data = await response.json()
-        setFlashcards(data.questions)
-      } catch (error) {
-        console.error("Error loading flashcard data:", error)
-      }
-    }
-    fetchData()
-  }, [])
-
-  const handleNextCard = () => {
-    setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length)
-    setShowAnswer(false)
-  }
-
-  const handlePrevCard = () => {
-    setCurrentCard(
-      (prevCard) => (prevCard - 1 + flashcards.length) % flashcards.length
-    )
-    setShowAnswer(false)
-  }
-
-  const handleAnswer = (isCorrect: boolean) => {
-    if (isCorrect) {
-      // Handle a correct answer
-    } else {
-      // Handle an incorrect answer
-    }
-
-    setShowAnswer(true)
-  }
-
-  if (flashcards.length === 0) {
-    return <div>Loading...</div>
-  }
-
+export default function App() {
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <Card className="">
-        <CardContent className="grid gap-4">
-          <div className="flex items-center mt-4">
-            {flashcards[currentCard].img && (
-              <img
-                src={flashcards[currentCard].img}
-                alt="Flashcard"
-                className="mb-4"
-              />
-            )}
+    <>
+      <div className="hidden flex-col md:flex">
+        <div className="border-b">
+          <div className="flex h-16 items-center px-4">
+            <div>🥟</div>
+            <div className="ml-auto flex items-center space-x-4">
+              <ModeToggle />
+            </div>
           </div>
-
-          <p className="text-lg mb-4 font-medium leading-none">
-            {flashcards[currentCard].text}
-          </p>
-          <div className="flex gap-2">
-            {flashcards[currentCard].responses.map((response, index) => (
-              <Button
-                key={index}
-                variant={
-                  showAnswer && response.correct ? "destructive" : "outline"
-                }
-                onClick={() => handleAnswer(!!response.correct)}
-              >
-                {response.text}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-
-        <CardFooter className="flex justify-between">
-          <Button
-            onClick={handlePrevCard}
-            disabled={currentCard === 0}
-            variant={"outline"}
-          >
-            Previous
-          </Button>
-          <Button
-            onClick={handleNextCard}
-            disabled={currentCard === flashcards.length - 1}
-          >
-            Next
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
+        </div>
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <Tabs defaultValue="fleshcard" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="fleshcard">Fleshcard</TabsTrigger>
+              <TabsTrigger value="stats">Stats</TabsTrigger>
+              <TabsTrigger value="reports" disabled>
+                Reports
+              </TabsTrigger>
+              <TabsTrigger value="notifications" disabled>
+                Notifications
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="stats" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Total Revenue
+                    </CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">$45,231.89</div>
+                    <p className="text-xs text-muted-foreground">
+                      +20.1% from last month
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Subscriptions
+                    </CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">+2350</div>
+                    <p className="text-xs text-muted-foreground">
+                      +180.1% from last month
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <rect width="20" height="14" x="2" y="5" rx="2" />
+                      <path d="M2 10h20" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">+12,234</div>
+                    <p className="text-xs text-muted-foreground">
+                      +19% from last month
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Active Now
+                    </CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">+573</div>
+                    <p className="text-xs text-muted-foreground">
+                      +201 since last hour
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <Card className="col-span-4">
+                  <CardHeader>
+                    <CardTitle>Overview</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pl-2">
+                    {/* <Overview /> */}
+                  </CardContent>
+                </Card>
+                <Card className="col-span-3">
+                  <CardHeader>
+                    <CardTitle>Recent Sales</CardTitle>
+                    <CardDescription>
+                      You made 265 sales this month.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>{/* <RecentSales /> */}</CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+            <TabsContent
+              value="fleshcard"
+              className="space-y-4 flex justify-center"
+            >
+              <Flashcard />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </>
   )
 }
-
-export default App
