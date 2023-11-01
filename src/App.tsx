@@ -12,7 +12,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 export default function App(): JSX.Element {
   return (
     <>
-      <div className="flex-col md:flex">
+      <div className="flex-col flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
             <div>🥟</div>
