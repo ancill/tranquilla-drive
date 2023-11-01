@@ -13,7 +13,9 @@ interface FlashcardSet {
   responses: Response[]
   text: string
 }
+
 type FlashcardProps = React.ComponentProps<typeof Card>
+
 export default function Flashcard({ className, ...props }: FlashcardProps) {
   const [flashcards, setFlashcards] = useState<FlashcardSet[]>([])
   const [currentCard, setCurrentCard] = useState<number>(0)
@@ -82,7 +84,9 @@ export default function Flashcard({ className, ...props }: FlashcardProps) {
             key={index}
             className="whitespace-normal break-words leading-1 h-auto"
             variant={showAnswer && response.correct ? "destructive" : "outline"}
-            onClick={() => handleAnswer(!!response.correct)}
+            onClick={() => {
+              handleAnswer(!!response.correct)
+            }}
           >
             {response.text}
           </Button>
