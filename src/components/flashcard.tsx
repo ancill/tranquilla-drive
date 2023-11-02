@@ -67,7 +67,10 @@ export function Flashcard({
   }
 
   return (
-    <Card className={cn("w-3/4 overflow-auto p-4", className)} {...props}>
+    <Card
+      className={cn("w-fit md:w-3/4 lg:w-2/4 overflow-auto p-4", className)}
+      {...props}
+    >
       <CardContent className="flex flex-col gap-4">
         <div className="flex justify-center">
           {Boolean(flashcards[currentCard].img) && (
