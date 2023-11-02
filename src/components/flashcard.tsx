@@ -16,7 +16,7 @@ interface FlashcardSet {
 
 type FlashcardProps = React.ComponentProps<typeof Card>;
 
-export default function Flashcard({
+export function Flashcard({
   className,
   ...props
 }: FlashcardProps): JSX.Element {
