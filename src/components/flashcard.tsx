@@ -7,6 +7,7 @@ import { BookType, BookA } from "lucide-react";
 interface Response {
   correct?: boolean;
   text: string;
+  ru: string;
 }
 
 interface FlashcardSet {
@@ -127,13 +128,13 @@ export function Flashcard({
               handleAnswer(response.correct === false);
             }}
           >
-            {response.text}
+            {showTranslate ? response.ru : response.text}
           </Button>
         ))}
         <Button
           onClick={handlePrevCard}
           disabled={currentCard === 0}
-          variant={"outline"}
+          variant={"secondary"}
         >
           Previous
         </Button>
