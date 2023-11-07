@@ -20,7 +20,6 @@ interface FlashcardSet {
 type FlashcardProps = React.ComponentProps<typeof Card>;
 
 // TODO:
-// Translation should be shown when user hold button
 // Correct answer should be green if you pressed on it, otherwise show red
 // Add automatic swipe to next card
 // Add global counter of right and wrong answers
@@ -82,8 +81,11 @@ export function Flashcard({
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => {
-          setShowTranslate(!showTranslate);
+        onMouseDown={() => {
+          setShowTranslate(true);
+        }}
+        onMouseUp={() => {
+          setShowTranslate(false);
         }}
       >
         {showTranslate ? (
