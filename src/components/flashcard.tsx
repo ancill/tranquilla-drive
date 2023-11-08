@@ -103,11 +103,12 @@ export function Flashcard({
     res: Response,
   ): ButtonProps["variant"] => {
     if (showAnswer) {
-      if (res.correct === true) return "success";
+      if (res.text === correctResponse?.text) return "success";
       else return "mistake";
     }
     return "outline";
   };
+
   return (
     <Card
       className={cn("w-fit md:w-3/4 lg:w-2/4 overflow-auto p-4", className)}
