@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { BookType, BookA } from "lucide-react";
@@ -33,6 +33,7 @@ export function Flashcard({
   const [currentCard, setCurrentCard] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
+  const [correctResponse, setCorrectResponse] = useState<Response>();
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -62,9 +63,9 @@ export function Flashcard({
     setShowAnswer(false);
   };
 
-  const handleAnswer = (isCorrect: boolean): void => {
-    if (isCorrect) {
-      // Handle a correct answer
+  const handleAnswer = (res: Response): void => {
+    if (res.correct === true) {
+      setCorrectResponse(res);
     } else {
       // Handle an incorrect answer
     }
@@ -98,6 +99,15 @@ export function Flashcard({
     );
   };
 
+  const handleButtonVarianOnAnswer = (
+    res: Response,
+  ): ButtonProps["variant"] => {
+    if (showAnswer) {
+      if (res.correct === true) return "success";
+      else return "mistake";
+    }
+    return "outline";
+  };
   return (
     <Card
       className={cn("w-fit md:w-3/4 lg:w-2/4 overflow-auto p-4", className)}
@@ -128,13 +138,9 @@ export function Flashcard({
           <Button
             key={index}
             className="whitespace-normal break-words leading-1 h-auto"
-            variant={
-              showAnswer && response.correct === true
-                ? "destructive"
-                : "outline"
-            }
+            variant={handleButtonVarianOnAnswer(response)}
             onClick={() => {
-              handleAnswer(response.correct === false);
+              handleAnswer(response);
             }}
           >
             {showTranslate ? response.ru : response.text}
