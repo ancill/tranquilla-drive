@@ -82,6 +82,12 @@ export function Flashcard({
       <Button
         variant="ghost"
         size="icon"
+        onTouchStart={() => {
+          setShowTranslate(true);
+        }}
+        onTouchEnd={() => {
+          setShowTranslate(false);
+        }}
         onMouseDown={() => {
           setShowTranslate(true);
         }}
@@ -103,8 +109,8 @@ export function Flashcard({
     res: Response,
   ): ButtonProps["variant"] => {
     if (showAnswer) {
-      if (res.text === correctResponse?.text) return "success";
-      else return "mistake";
+      if (res.correct === true) return "success";
+      else return "outline";
     }
     return "outline";
   };
