@@ -33,7 +33,7 @@ export function Flashcard({
   const [currentCard, setCurrentCard] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
-  const [correctResponse, setCorrectResponse] = useState<Response>();
+  // const [correctResponse, setCorrectResponse] = useState<Response>();
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -65,7 +65,7 @@ export function Flashcard({
 
   const handleAnswer = (res: Response): void => {
     if (res.correct === true) {
-      setCorrectResponse(res);
+      //   setCorrectResponse(res);
     } else {
       // Handle an incorrect answer
     }
