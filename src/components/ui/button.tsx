@@ -16,6 +16,10 @@ const buttonVariants = cva(
         mistake: "border-destructive border",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        outline_disabled:
+          "border border-input bg-background bg-accent text-accent-foreground",
+        selected:
+          "border border-input border-blue-500 bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",

@@ -20,7 +20,7 @@ interface FlashcardSet {
 type FlashcardProps = React.ComponentProps<typeof Card>;
 
 // TODO:
-// Correct answer should be green if you pressed on it, otherwise show red
+
 // Add automatic swipe to next card
 // Add global counter of right and wrong answers
 // Add global counter of all cards
@@ -33,7 +33,7 @@ export function Flashcard({
   const [currentCard, setCurrentCard] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
-  // const [correctResponse, setCorrectResponse] = useState<Response>();
+  const [selectedCard, setSelectedCard] = useState<Response | null>(null);
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -51,27 +51,21 @@ export function Flashcard({
     });
   }, []);
 
+  const handleCheck = (): void => {
+    setShowAnswer(true);
+    setSelectedCard(null);
+  };
   const handleNextCard = (): void => {
     setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length);
     setShowAnswer(false);
   };
 
-  const handlePrevCard = (): void => {
-    setCurrentCard(
-      (prevCard) => (prevCard - 1 + flashcards.length) % flashcards.length,
-    );
-    setShowAnswer(false);
-  };
-
-  const handleAnswer = (res: Response): void => {
-    if (res.correct === true) {
-      //   setCorrectResponse(res);
-    } else {
-      // Handle an incorrect answer
-    }
-
-    setShowAnswer(true);
-  };
+  // const handlePrevCard = (): void => {
+  //   setCurrentCard(
+  //     (prevCard) => (prevCard - 1 + flashcards.length) % flashcards.length,
+  //   );
+  //   setShowAnswer(false);
+  // };
 
   if (flashcards.length === 0) {
     return <div>Loading...</div>;
@@ -112,7 +106,29 @@ export function Flashcard({
       if (res.correct === true) return "success";
       else return "outline";
     }
+    if (selectedCard !== null && res.text === selectedCard.text)
+      return "selected";
+
     return "outline";
+  };
+
+  const handleSelect = (res: Response): void => {
+    setSelectedCard(res);
+  };
+
+  const isSelected = selectedCard !== null;
+
+  const ActionButton = (): JSX.Element => {
+    return (
+      <Button
+        onClick={!showAnswer ? handleCheck : handleNextCard}
+        className="uppercase font-bold mt-20"
+        variant={!isSelected && !showAnswer ? "outline_disabled" : "default"}
+        disabled={showAnswer ? false : !isSelected}
+      >
+        {isSelected ? "Check" : "Continue"}
+      </Button>
+    );
   };
 
   return (
@@ -144,28 +160,16 @@ export function Flashcard({
         {flashcards[currentCard].responses.map((response, index) => (
           <Button
             key={index}
-            className="whitespace-normal break-words leading-1 h-auto"
+            className="whitespace-normal break-words leading-1 h-auto font-semibold"
             variant={handleButtonVarianOnAnswer(response)}
             onClick={() => {
-              handleAnswer(response);
+              if (!showAnswer) handleSelect(response);
             }}
           >
             {showTranslate ? response.ru : response.text}
           </Button>
         ))}
-        <Button
-          onClick={handlePrevCard}
-          disabled={currentCard === 0}
-          variant={"secondary"}
-        >
-          Previous
-        </Button>
-        <Button
-          onClick={handleNextCard}
-          disabled={currentCard === flashcards.length - 1}
-        >
-          Next
-        </Button>
+        <ActionButton />
       </CardFooter>
     </Card>
   );
