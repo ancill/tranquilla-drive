@@ -3,7 +3,7 @@ import { Button, type ButtonProps } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { BookType, BookA } from "lucide-react";
-import { FlipPanel } from "@/components/flip-panel";
+import { AnswerPanel } from "./answer-panel";
 
 interface Response {
   correct?: boolean;
@@ -34,7 +34,6 @@ export function Flashcard({
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<Response | null>(null);
   const [isFlipPanelOpen, setFlipPanelOpen] = useState(false);
-  const [isImageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -128,7 +127,7 @@ export function Flashcard({
     return (
       <Button
         onClick={handleClick}
-        className="uppercase font-bold mt-40 w-full z-40 gap-0"
+        className="uppercase font-bold w-full z-40 gap-0"
         variant={!isSelected && !showAnswer ? "outline_disabled" : "default"}
         disabled={showAnswer ? false : !isSelected}
       >
@@ -137,26 +136,34 @@ export function Flashcard({
     );
   };
 
-  const isImageInCard = Boolean(flashcards[currentCard].img);
+  const Image = (): JSX.Element => {
+    const [isImageLoaded, setImageLoaded] = useState(false);
+    return (
+      <div className="flex justify-center">
+        {Boolean(flashcards[currentCard].img) && (
+          <img
+            src={flashcards[currentCard].img}
+            alt="Flashcard"
+            className="h-56"
+            onLoad={() => {
+              setImageLoaded(!isImageLoaded);
+            }}
+          />
+        )}
+      </div>
+    );
+  };
 
-  return isImageInCard && isImageLoaded ? (
+  return (
     <Card
-      className={cn("w-fit md:w-3/4 lg:w-2/4 overflow-auto", className)}
+      className={cn(
+        "w-fit md:w-3/4 lg:w-2/4 overflow-none flex flex-col h-screen",
+        className,
+      )}
       {...props}
     >
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex justify-center">
-          {Boolean(flashcards[currentCard].img) && (
-            <img
-              src={flashcards[currentCard].img}
-              alt="Flashcard"
-              className="mb-4"
-              onLoad={() => {
-                setImageLoaded(true);
-              }}
-            />
-          )}
-        </div>
+      <CardContent className="flex flex-col gap-4 pt-4">
+        <Image />
         <div className="flex gap-4">
           <p className="text-lg mb-4 font-medium leading-none break-words">
             {showTranslate
@@ -178,12 +185,10 @@ export function Flashcard({
           </Button>
         ))}
       </CardContent>
-      <CardFooter>
+      <CardFooter className="mt-auto">
         <ActionButton />
       </CardFooter>
-      <FlipPanel isOpen={isFlipPanelOpen} />
+      <AnswerPanel isOpen={isFlipPanelOpen} />
     </Card>
-  ) : (
-    <Card></Card>
   );
 }

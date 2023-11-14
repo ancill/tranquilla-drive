@@ -6,7 +6,7 @@
   "tailwind": {
     "config": "tailwind.config.js",
     "css": "src/index.css",
-    "baseColor": "yellow",
+    "baseColor": "slate",
     "cssVariables": true
   },
   "aliases": {
