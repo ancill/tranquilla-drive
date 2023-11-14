@@ -1,5 +1,9 @@
 import { useCardCounter } from "@/lib/utils";
 import { ModeToggle } from "./mode-toggle";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
   // const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -24,11 +28,31 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
   // }, [lastScrollTop]);
   // ${ visible ? "translate-y-0" : "-translate-y-full" }
 
-  const Counter = (): JSX.Element => {
-    const { currentCard } = useCardCounter();
-
-    return <div>{currentCard}</div>;
-  };
+  function InputWithButton(): JSX.Element {
+    const { currentCard, setCurrentCard } = useCardCounter();
+    const [inputValue, setInputValue] = useState("");
+    return (
+      <div className="flex w-full max-w-sm items-center space-x-2">
+        <Input
+          type="number"
+          placeholder={`${currentCard}`}
+          className="w-14"
+          onChange={(event) => {
+            setInputValue(event.target.value);
+          }}
+        />
+        <Button
+          type="submit"
+          variant={"outline"}
+          onClick={(event) => {
+            setCurrentCard(Number(inputValue));
+          }}
+        >
+          <ArrowRight />
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -38,7 +62,7 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
         <div>🥟</div>
         <div className="flex-1 flex justify-center">{children}</div>
         <div className="ml-auto flex items-center space-x-4">
-          <Counter />
+          <InputWithButton />
           <ModeToggle />
         </div>
       </div>
