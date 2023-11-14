@@ -9,10 +9,9 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
     const currentScrollTop = document.documentElement.scrollTop;
     if (currentScrollTop > lastScrollTop) {
       // Scroll Down
-      setVisible(false);
+      setVisible(!visible);
     } else {
       // Scroll Up
-      setVisible(true);
     }
     setLastScrollTop(currentScrollTop);
   };
