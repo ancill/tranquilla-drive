@@ -25,12 +25,6 @@ export default function App(): JSX.Element {
             <TabsTrigger value="stats" disabled>
               Stats
             </TabsTrigger>
-            <TabsTrigger value="reports" disabled>
-              Reports
-            </TabsTrigger>
-            <TabsTrigger value="notifications" disabled>
-              Notifications
-            </TabsTrigger>
           </TabsList>
         </NavBar>
 

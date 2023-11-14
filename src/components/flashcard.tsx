@@ -3,6 +3,7 @@ import { Button, type ButtonProps } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { BookType, BookA } from "lucide-react";
+import { FlipPanel } from "@/components/flip-panel";
 
 interface Response {
   correct?: boolean;
@@ -20,8 +21,6 @@ interface FlashcardSet {
 type FlashcardProps = React.ComponentProps<typeof Card>;
 
 // TODO:
-
-// Add automatic swipe to next card
 // Add global counter of right and wrong answers
 // Add global counter of all cards
 
@@ -34,6 +33,8 @@ export function Flashcard({
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<Response | null>(null);
+  const [isFlipPanelOpen, setFlipPanelOpen] = useState(false);
+  const [isImageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -119,10 +120,15 @@ export function Flashcard({
   const isSelected = selectedCard !== null;
 
   const ActionButton = (): JSX.Element => {
+    const handleClick = (): void => {
+      !showAnswer ? handleCheck() : handleNextCard();
+      setFlipPanelOpen(!isFlipPanelOpen);
+    };
+
     return (
       <Button
-        onClick={!showAnswer ? handleCheck : handleNextCard}
-        className="uppercase font-bold mt-20"
+        onClick={handleClick}
+        className="uppercase font-bold mt-40 w-full z-40 gap-0"
         variant={!isSelected && !showAnswer ? "outline_disabled" : "default"}
         disabled={showAnswer ? false : !isSelected}
       >
@@ -131,9 +137,11 @@ export function Flashcard({
     );
   };
 
-  return (
+  const isImageInCard = Boolean(flashcards[currentCard].img);
+
+  return isImageInCard && isImageLoaded ? (
     <Card
-      className={cn("w-fit md:w-3/4 lg:w-2/4 overflow-auto p-4", className)}
+      className={cn("w-fit md:w-3/4 lg:w-2/4 overflow-auto", className)}
       {...props}
     >
       <CardContent className="flex flex-col gap-4">
@@ -143,6 +151,9 @@ export function Flashcard({
               src={flashcards[currentCard].img}
               alt="Flashcard"
               className="mb-4"
+              onLoad={() => {
+                setImageLoaded(true);
+              }}
             />
           )}
         </div>
@@ -154,9 +165,6 @@ export function Flashcard({
           </p>
           <TranslateButton />
         </div>
-      </CardContent>
-
-      <CardFooter className="grid gap-4">
         {flashcards[currentCard].responses.map((response, index) => (
           <Button
             key={index}
@@ -169,8 +177,13 @@ export function Flashcard({
             {showTranslate ? response.ru : response.text}
           </Button>
         ))}
+      </CardContent>
+      <CardFooter>
         <ActionButton />
       </CardFooter>
+      <FlipPanel isOpen={isFlipPanelOpen} />
     </Card>
+  ) : (
+    <Card></Card>
   );
 }
