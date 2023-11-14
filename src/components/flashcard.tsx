@@ -20,10 +20,6 @@ interface FlashcardSet {
 
 type FlashcardProps = React.ComponentProps<typeof Card>;
 
-// TODO:
-// Add global counter of right and wrong answers
-// Add global counter of all cards
-
 export function Flashcard({
   className,
   ...props
@@ -148,8 +144,8 @@ export function Flashcard({
         {Boolean(flashcards[currentCard].img) && (
           <img
             src={flashcards[currentCard].img}
-            alt="Flashcard"
-            className="h-56"
+            alt="img"
+            className="object-contain h-48 w-full"
             onLoad={() => {
               setImageLoaded(!isImageLoaded);
             }}
@@ -181,7 +177,6 @@ export function Flashcard({
               ? flashcards[currentCard].ru
               : flashcards[currentCard].text}
           </p>
-          <TranslateButton />
         </div>
         {flashcards[currentCard].responses.map((response, index) => (
           <Button
@@ -196,8 +191,9 @@ export function Flashcard({
           </Button>
         ))}
       </CardContent>
-      <CardFooter className="mt-auto">
+      <CardFooter className="mt-auto gap-2">
         <ActionButton />
+        <TranslateButton />
       </CardFooter>
       <AnswerPanel
         isOpen={isFlipPanelOpen}

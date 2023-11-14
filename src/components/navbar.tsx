@@ -44,7 +44,7 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
         <Button
           type="submit"
           variant={"outline"}
-          onClick={(event) => {
+          onClick={() => {
             setCurrentCard(Number(inputValue));
           }}
         >
