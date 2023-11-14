@@ -77,7 +77,7 @@ export function Flashcard({
     return (
       <Button
         variant="ghost"
-        size="icon"
+        size="lg"
         onTouchStart={() => {
           setShowTranslate(true);
         }}
