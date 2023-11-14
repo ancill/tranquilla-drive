@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { ModeToggle } from "./mode-toggle";
 
 export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
