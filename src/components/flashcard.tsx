@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { BookType, BookA } from "lucide-react";
 import { AnswerPanel } from "./answer-panel";
 
-interface Response {
+export interface Answer {
   correct?: boolean;
   text: string;
   ru: string;
@@ -13,7 +13,7 @@ interface Response {
 
 interface FlashcardSet {
   img?: string;
-  responses: Response[];
+  responses: Answer[];
   text: string;
   ru: string;
 }
@@ -32,7 +32,9 @@ export function Flashcard({
   const [currentCard, setCurrentCard] = useState<number>(0);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
-  const [selectedCard, setSelectedCard] = useState<Response | null>(null);
+  const [selectedCard, setSelectedCard] = useState<Answer | undefined>(
+    undefined,
+  );
   const [isFlipPanelOpen, setFlipPanelOpen] = useState(false);
 
   useEffect(() => {
@@ -53,7 +55,6 @@ export function Flashcard({
 
   const handleCheck = (): void => {
     setShowAnswer(true);
-    setSelectedCard(null);
   };
   const handleNextCard = (): void => {
     setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length);
@@ -99,20 +100,13 @@ export function Flashcard({
     );
   };
 
-  const handleButtonVarianOnAnswer = (
-    res: Response,
-  ): ButtonProps["variant"] => {
-    if (showAnswer) {
-      if (res.correct === true) return "success";
-      else return "outline";
-    }
-    if (selectedCard !== null && res.text === selectedCard.text)
-      return "selected";
+  const handleButtonVarianOnAnswer = (res: Answer): ButtonProps["variant"] => {
+    if (res.text === selectedCard?.text) return "selected";
 
     return "outline";
   };
 
-  const handleSelect = (res: Response): void => {
+  const handleSelect = (res: Answer): void => {
     setSelectedCard(res);
   };
 
@@ -124,11 +118,16 @@ export function Flashcard({
       setFlipPanelOpen(!isFlipPanelOpen);
     };
 
+    const isCorrect = selectedCard?.correct ?? false;
+
     return (
       <Button
         onClick={handleClick}
-        className="uppercase font-bold w-full z-40 gap-0"
-        variant={!isSelected && !showAnswer ? "outline_disabled" : "default"}
+        className={cn(
+          "uppercase font-bold w-full z-40 gap-0",
+          isCorrect ? "bg-primary" : "bg-red-500",
+        )}
+        variant={isCorrect ? "default" : "outline"}
         disabled={showAnswer ? false : !isSelected}
       >
         {isSelected ? "Check" : "Continue"}
@@ -188,7 +187,7 @@ export function Flashcard({
       <CardFooter className="mt-auto">
         <ActionButton />
       </CardFooter>
-      <AnswerPanel isOpen={isFlipPanelOpen} />
+      <AnswerPanel isOpen={isFlipPanelOpen} answer={selectedCard} />
     </Card>
   );
 }
