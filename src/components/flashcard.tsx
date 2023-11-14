@@ -59,6 +59,7 @@ export function Flashcard({
   const handleNextCard = (): void => {
     setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length);
     setShowAnswer(false);
+    setSelectedCard(undefined);
   };
 
   // const handlePrevCard = (): void => {
@@ -110,27 +111,31 @@ export function Flashcard({
     setSelectedCard(res);
   };
 
-  const isSelected = selectedCard !== null;
-
   const ActionButton = (): JSX.Element => {
+    const isCardSelected = selectedCard !== undefined;
     const handleClick = (): void => {
       !showAnswer ? handleCheck() : handleNextCard();
       setFlipPanelOpen(!isFlipPanelOpen);
     };
 
-    const isCorrect = selectedCard?.correct ?? false;
+    const handleTitle = (): string => {
+      if (showAnswer) return "Continue";
+      if (isCardSelected) return "Check";
+
+      return "Select Answer";
+    };
+
+    const correctAnswer: ButtonProps["variant"] =
+      selectedCard?.correct === true ? "default" : "destructive";
 
     return (
       <Button
         onClick={handleClick}
-        className={cn(
-          "uppercase font-bold w-full z-40 gap-0",
-          isCorrect ? "bg-primary" : "bg-red-500",
-        )}
-        variant={isCorrect ? "default" : "outline"}
-        disabled={showAnswer ? false : !isSelected}
+        className={cn("uppercase font-bold w-full z-40 gap-0")}
+        variant={showAnswer ? correctAnswer : "outline_disabled"}
+        disabled={!isCardSelected}
       >
-        {isSelected ? "Check" : "Continue"}
+        {handleTitle()}
       </Button>
     );
   };
@@ -150,6 +155,12 @@ export function Flashcard({
           />
         )}
       </div>
+    );
+  };
+
+  const getCorrectAnswer = (): Answer | undefined => {
+    return flashcards[currentCard].responses.find(
+      (val) => val.correct === true,
     );
   };
 
@@ -187,7 +198,11 @@ export function Flashcard({
       <CardFooter className="mt-auto">
         <ActionButton />
       </CardFooter>
-      <AnswerPanel isOpen={isFlipPanelOpen} answer={selectedCard} />
+      <AnswerPanel
+        isOpen={isFlipPanelOpen}
+        selectedAnswer={selectedCard}
+        correctAnswer={getCorrectAnswer()}
+      />
     </Card>
   );
 }
