@@ -1,3 +1,4 @@
+import { useCardCounter } from "@/lib/utils";
 import { ModeToggle } from "./mode-toggle";
 
 export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
@@ -22,6 +23,13 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
   //   };
   // }, [lastScrollTop]);
   // ${ visible ? "translate-y-0" : "-translate-y-full" }
+
+  const Counter = (): JSX.Element => {
+    const { currentCard } = useCardCounter();
+
+    return <div>{currentCard}</div>;
+  };
+
   return (
     <div
       className={` w-full px-4 bg-secondary top-0 transition-transform duration-300 ease-in-out`}
@@ -30,6 +38,7 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
         <div>🥟</div>
         <div className="flex-1 flex justify-center">{children}</div>
         <div className="ml-auto flex items-center space-x-4">
+          <Counter />
           <ModeToggle />
         </div>
       </div>

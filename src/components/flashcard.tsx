@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, useCardCounter } from "@/lib/utils";
 import { BookType, BookA } from "lucide-react";
 import { AnswerPanel } from "./answer-panel";
 
@@ -29,7 +29,7 @@ export function Flashcard({
   ...props
 }: FlashcardProps): JSX.Element {
   const [flashcards, setFlashcards] = useState<FlashcardSet[]>([]);
-  const [currentCard, setCurrentCard] = useState<number>(0);
+  const { currentCard, setCurrentCard } = useCardCounter();
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showTranslate, setShowTranslate] = useState<boolean>(false);
   const [selectedCard, setSelectedCard] = useState<Answer | undefined>(
@@ -57,7 +57,8 @@ export function Flashcard({
     setShowAnswer(true);
   };
   const handleNextCard = (): void => {
-    setCurrentCard((prevCard) => (prevCard + 1) % flashcards.length);
+    const nextCardIdx = (currentCard + 1) % flashcards.length;
+    setCurrentCard(nextCardIdx);
     setShowAnswer(false);
     setSelectedCard(undefined);
   };
