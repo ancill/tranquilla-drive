@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { cn, useCardCounter } from "@/lib/utils";
+import { cn, useCardCounter, useSafariCheck } from "@/lib/utils";
 import { BookType, BookA } from "lucide-react";
 import { AnswerPanel } from "./answer-panel";
 
@@ -32,6 +32,7 @@ export function Flashcard({
     undefined,
   );
   const [isFlipPanelOpen, setFlipPanelOpen] = useState(false);
+  const { isSafari } = useSafariCheck();
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
@@ -164,7 +165,8 @@ export function Flashcard({
   return (
     <Card
       className={cn(
-        "w-fit md:w-3/4 lg:w-2/4 overflow-none flex flex-col min-h-[calc(100svh+74px)]",
+        "w-fit md:w-3/4 lg:w-2/4 overflow-none flex flex-col min-h-[calc(100svh-74px)]",
+        isSafari ? "min-h-[calc(100svh+74px)]" : "min-h-[calc(100svh-74px)]",
         className,
       )}
       {...props}

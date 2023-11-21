@@ -16,7 +16,10 @@ export const getCurrentCardIdx = (): number =>
     ? Number(window.localStorage.getItem("currentCard"))
     : 0;
 
-export const useCardCounter = () => {
+export const useCardCounter = (): {
+  currentCard: number;
+  setCurrentCard: (newValue: number) => void;
+} => {
   // Initialize the state with the value from localStorage
   const [currentCard, setCurrentCardState] = useState(getCurrentCardIdx());
 
@@ -36,10 +39,26 @@ export const useCardCounter = () => {
   }, []);
 
   // Wrap the state setter function to also update localStorage
-  const setCurrentCard = (newValue: number) => {
+  const setCurrentCard = (newValue: number): void => {
     setCurrentCardState(newValue);
     updateLocalStorage(newValue);
   };
 
   return { currentCard, setCurrentCard };
+};
+
+export const useSafariCheck = (): {
+  isSafari: boolean;
+} => {
+  const [isSafari, setIsSafari] = useState(false);
+
+  useEffect(() => {
+    // Check for Safari browser
+    const userAgent = navigator.userAgent.toLowerCase();
+    setIsSafari(
+      userAgent.includes("safari/") && !userAgent.includes("chrome/"),
+    );
+  }, []);
+
+  return { isSafari };
 };
