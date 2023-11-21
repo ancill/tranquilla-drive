@@ -20,7 +20,7 @@ export default function App(): JSX.Element {
         </TabsContent>
         <TabsContent
           value="fleshcard"
-          className="space-y-4 flex justify-center flex-col"
+          className="space-y-4 flex justify-center flex-col overflow-hidden"
         >
           <Flashcard />
         </TabsContent>
