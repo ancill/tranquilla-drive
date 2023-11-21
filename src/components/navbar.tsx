@@ -36,13 +36,14 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
         <Input
           type="number"
           placeholder={`${currentCard}`}
-          className="w-14"
+          className="w-16"
           onChange={(event) => {
             setInputValue(event.target.value);
           }}
         />
         <Button
           type="submit"
+          className="px-2"
           variant={"outline"}
           onClick={() => {
             setCurrentCard(Number(inputValue));
