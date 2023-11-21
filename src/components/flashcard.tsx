@@ -124,7 +124,7 @@ export function Flashcard({
     };
 
     const correctAnswer: ButtonProps["variant"] =
-      selectedCard?.correct === true ? "default" : "destructive";
+      selectedCard?.correct === true ? "success" : "destructive";
 
     return (
       <Button

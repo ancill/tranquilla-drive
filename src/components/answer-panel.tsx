@@ -17,11 +17,11 @@ export const AnswerPanel = ({
     <div className="w-full relative">
       <div
         className={cn(
-          "text-red-500 flex flex-col gap-2 p-4 rounded-md absolute z-20 inset-x-0 -bottom-20 w-full h-48 bg-background shadow-lg overflow-auto transition-transform duration-300",
+          "text-red-500 flex flex-col gap-2 p-4 rounded-md absolute z-20 inset-x-0 -bottom-20 w-full pb-20 bg-background shadow-lg overflow-auto transition-transform duration-300",
           isOpen
             ? "transform -translate-y-20 ease-out"
             : "transform translate-y-full ease-in",
-          isCorrect && "text-primary",
+          isCorrect && "text-green-500",
         )}
       >
         <div className="flex justify-between ">
