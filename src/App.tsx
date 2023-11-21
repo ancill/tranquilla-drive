@@ -4,7 +4,7 @@ import { Stats, Flashcard, NavBar } from "@/components";
 
 export default function App(): JSX.Element {
   return (
-    <div className="">
+    <div>
       <Tabs defaultValue="fleshcard" className="">
         <NavBar>
           <TabsList>
@@ -20,7 +20,7 @@ export default function App(): JSX.Element {
         </TabsContent>
         <TabsContent
           value="fleshcard"
-          className="space-y-4 flex justify-center overflow-hidden"
+          className="space-y-4 flex justify-center flex-col"
         >
           <Flashcard />
         </TabsContent>

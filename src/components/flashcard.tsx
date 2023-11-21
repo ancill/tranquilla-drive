@@ -164,7 +164,7 @@ export function Flashcard({
   return (
     <Card
       className={cn(
-        "w-fit md:w-3/4 lg:w-2/4 overflow-none flex flex-col h-[calc(100svh-74px)]",
+        "w-fit md:w-3/4 lg:w-2/4 overflow-none flex flex-col min-h-[calc(100svh+74px)]",
         className,
       )}
       {...props}

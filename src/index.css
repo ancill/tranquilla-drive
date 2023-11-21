@@ -11,12 +11,6 @@
   }
 }
 
-@layer utilities {
-  .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
-
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
