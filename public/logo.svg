@@ -1,0 +1,14 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define the dumpling shape -->
+  <path d="M 10,50
+           Q 50,10 90,50
+           Q 50,90 10,50
+           Z" 
+        fill="#fada5e" stroke="#f1c27d" stroke-width="3"/>
+  <!-- Add details to the dumpling -->
+  <path d="M 50,50
+           Q 55,45 60,50
+           Q 55,55 50,50
+           Z" 
+        fill="#ffffff" stroke="#f1c27d" stroke-width="1"/>
+</svg>
