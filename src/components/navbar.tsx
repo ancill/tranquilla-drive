@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
-import { Label } from "@radix-ui/react-dropdown-menu";
+
 import {
   Dialog,
   DialogTrigger,
@@ -12,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "@/components/ui/dialog";
 export function BinancePayDialog(): JSX.Element {
   return (
