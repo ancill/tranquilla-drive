@@ -4,6 +4,53 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+export function BinancePayDialog(): JSX.Element {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">🥟</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Поддержать проект эмпанадасами 🥟</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4">
+          <img
+            src="/binance.png"
+            className="object-contain h-64 w-full"
+            alt="binance pay: Ancill (542291390)"
+          />
+
+          <div className="flex flex-col gap-4">
+            <div>
+              <h4 className="text-sm font-medium leading-none">TRC20:</h4>
+              <p className="text-sm text-muted-foreground">
+                TGsXq51LHXHRiDcJT8RrzjXK2Fj8wViWef
+              </p>
+            </div>
+            <div>
+              <h4 className="text-sm font-medium leading-none"> BEP20:</h4>
+              <p className="text-sm text-muted-foreground">
+                0x9f513cbbf75a635adc95c21b1e2a85b614e0e7b7
+              </p>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
   // const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -60,7 +107,7 @@ export function NavBar({ children }: { children: JSX.Element }): JSX.Element {
       className={` w-full px-4 bg-secondary top-0 transition-transform duration-300 ease-in-out`}
     >
       <div className="flex h-16 items-center justify-between">
-        <div>🥟</div>
+        <BinancePayDialog />
         <div className="flex-1 flex justify-center">{children}</div>
         <div className="ml-auto flex items-center space-x-4">
           <InputWithButton />
