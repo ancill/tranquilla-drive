@@ -9,9 +9,7 @@ export default function App(): JSX.Element {
         <NavBar>
           <TabsList>
             <TabsTrigger value="fleshcard">Fleshcard</TabsTrigger>
-            <TabsTrigger value="stats" disabled>
-              Stats
-            </TabsTrigger>
+            <TabsTrigger value="stats">Stats</TabsTrigger>
           </TabsList>
         </NavBar>
 
